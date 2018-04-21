@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zzd.ipareainfo.mybatis.IpAreaInfoMapper">
+
+	<resultMap id="IpAreaInfo" type="com.zzd.ipareainfo.bean.IpAreaInfo">
+		<id property="bh" column="C_BH" jdbcType="CHAR" />
+		<result property="ip" column="C_IP" jdbcType="VARCHAR" />
+		<result property="country" column="C_COUNTRY" jdbcType="VARCHAR" />
+		<result property="countryid" column="C_COUNTRY_ID" jdbcType="VARCHAR" />
+		<result property="area" column="C_AREA" jdbcType="VARCHAR" />
+		<result property="areaid" column="C_AREA_ID" jdbcType="VARCHAR" />
+		<result property="region" column="C_REGION" jdbcType="VARCHAR" />
+		<result property="regionid" column="C_REGION_ID" jdbcType="VARCHAR" />
+		<result property="city" column="C_CITY" jdbcType="VARCHAR" />
+		<result property="cityid" column="C_CITY_ID" jdbcType="VARCHAR" />
+		<result property="county" column="C_COUNTY" jdbcType="VARCHAR" />
+		<result property="countyid" column="C_COUNTY_ID" jdbcType="VARCHAR" />
+		<result property="isp" column="C_ISP" jdbcType="VARCHAR" />
+		<result property="ispid" column="C_ISP_ID" jdbcType="VARCHAR" />
+		<result property="delmark" column="N_DELMARK" jdbcType="INTEGER" />
+		<result property="createtime" column="D_CREATETIME" jdbcType="TIMESTAMP" />
+		<result property="updatetime" column="D_UPDATETIME" jdbcType="TIMESTAMP" />
+	</resultMap>
+	<insert id="addIpAreaInfo" parameterType="com.zzd.ipareainfo.bean.IpAreaInfo">
+		insert into
+		t_ipareainfo (C_BH, C_IP, C_COUNTRY, C_COUNTRY_ID, C_AREA,C_AREA_ID,C_REGION,C_REGION_ID,C_CITY,C_CITY_ID,C_COUNTY,C_COUNTY_ID,C_ISP,C_ISP_ID,N_DELMARK,D_CREATETIME,D_UPDATETIME)
+		values
+		(#{bh, jdbcType=CHAR}, 
+		#{ip,jdbcType=VARCHAR}, 
+		#{country,jdbcType=VARCHAR}, 
+		#{countryid,jdbcType=VARCHAR}, 
+		#{area,jdbcType=VARCHAR}, 
+		#{areaid,jdbcType=VARCHAR}, 
+		#{region,jdbcType=VARCHAR}, 
+		#{regionid,jdbcType=VARCHAR}, 
+		#{city,jdbcType=VARCHAR}, 
+		#{cityid,jdbcType=VARCHAR}, 
+		#{county,jdbcType=VARCHAR}, 
+		#{countyid,jdbcType=VARCHAR}, 
+		#{isp,jdbcType=VARCHAR}, 
+		#{ispid,jdbcType=VARCHAR},
+		#{delmark,jdbcType=INTEGER},
+		#{createtime,jdbcType=TIMESTAMP},
+		#{updatetime,jdbcType=TIMESTAMP})
+	</insert>
+	
+	<update id="updateIpAreaInfo" parameterType="com.zzd.ipareainfo.bean.IpAreaInfo">
+		update  t_ipareainfo
+		set
+	    C_COUNTRY= #{country,jdbcType=VARCHAR}, 
+	    C_COUNTRY_ID = #{countryid,jdbcType=VARCHAR}, 
+	    C_AREA= #{area,jdbcType=VARCHAR}, 
+	    C_AREA_ID = #{areaid,jdbcType=VARCHAR}, 
+	    C_REGION = #{region,jdbcType=VARCHAR}, 
+	    C_REGION_ID = #{regionid,jdbcType=VARCHAR}, 
+	    C_CITY = #{city,jdbcType=VARCHAR}, 
+	    C_CITY_ID = #{cityid,jdbcType=VARCHAR}, 
+	    C_COUNTY = #{county,jdbcType=VARCHAR}, 
+	    C_COUNTY_ID = #{countyid,jdbcType=VARCHAR}, 
+	    C_ISP = #{isp,jdbcType=VARCHAR}, 
+	    C_ISP_ID = #{ispid,jdbcType=VARCHAR},
+	    N_DELMARK = #{delmark,jdbcType=INTEGER},
+	    D_UPDATETIME = #{updatetime,jdbcType=TIMESTAMP}
+		where C_IP= #{ip,jdbcType=VARCHAR}
+	</update>
+	<select id="getIpAreaInfoByIp" parameterType="java.lang.String"
+		resultMap="IpAreaInfo">
+		select C_BH, C_IP, C_COUNTRY, C_COUNTRY_ID, C_AREA,C_AREA_ID,C_REGION,C_REGION_ID,C_CITY,C_CITY_ID,C_COUNTY,C_COUNTY_ID,C_ISP,C_ISP_ID,N_DELMARK,D_UPDATETIME
+		from t_ipareainfo
+		where C_IP = #{ip,jdbcType=VARCHAR}
+	</select>
+	<select id="getIpAreaInfoByIps" resultMap="IpAreaInfo">
+		select C_BH, C_IP, C_COUNTRY, C_COUNTRY_ID, C_AREA,C_AREA_ID,C_REGION,C_REGION_ID,C_CITY,C_CITY_ID,C_COUNTY,C_COUNTY_ID,C_ISP,C_ISP_ID,N_DELMARK,D_UPDATETIME
+		from t_ipareainfo
+		where C_IP in
+		<foreach item="list" index="index" collection="list"
+                 open="(" separator="," close=")">
+            #{list}
+        </foreach>
+	</select>
+	<select id="getBhByIps" resultType="String">
+		select C_IP
+		from t_ipareainfo
+		where C_IP in
+		<foreach item="list" index="index" collection="list"
+                 open="(" separator="," close=")">
+            #{list}
+        </foreach>
+	</select>
+	<select id="getUnHandleIp" resultType="java.lang.String">
+		select  C_IP from t_ipareainfo
+		where D_UPDATETIME is null ;
+	</select>
+</mapper>

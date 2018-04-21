@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zzd.ipareainfo.mybatis.ProvinceMapper">
+
+	<resultMap id="Province" type="com.zzd.ipareainfo.bean.Province">
+		<id property="regionid" column="C_REGION_ID" jdbcType="VARCHAR" />
+		<result property="region" column="C_REGION" jdbcType="VARCHAR" />
+		<result property="province" column="C_PROVINCE" jdbcType="VARCHAR" />
+		<result property="country" column="C_COUNTRY" jdbcType="VARCHAR" />
+		<result property="countryid" column="C_COUNTRY_ID" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<select id="getProvinceByRegionid" parameterType="java.lang.String"
+		resultMap="Province">
+		select C_COUNTRY, C_COUNTRY_ID, C_REGION,C_REGION_ID,C_PROVINCE
+		from t_province
+		where C_REGION_ID = #{regionid,jdbcType=VARCHAR}
+	</select>
+</mapper>
