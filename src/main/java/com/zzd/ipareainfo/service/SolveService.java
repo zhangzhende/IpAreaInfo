@@ -155,7 +155,7 @@ public class SolveService {
 						}
 					} else {
 						if(!hasInsert.contains(Constant.getIPHead(ip))){
-							IpAreaInfo ipAreaInfo = getNewIpAreaInfo(ip);
+							IpAreaInfo ipAreaInfo = UtilTool.getNewIpAreaInfo(ip);
 							addIPList.add(ipAreaInfo);
 							hasInsert.add(Constant.getIPHead(ip));
 						}
@@ -199,7 +199,7 @@ public class SolveService {
 		for (String ip : ipList) {
 			if (!notInList.contains(ip)) {
 				if (map.get(Constant.getIPHead(ip)) == null && !hasInsert.contains(Constant.getIPHead(ip))) {// 查询为空表示为数据库中没有,并且本批次未算入该ip段
-					IpAreaInfo ipAreaInfo = getNewIpAreaInfo(ip);
+					IpAreaInfo ipAreaInfo = UtilTool.getNewIpAreaInfo(ip);
 					addIPList.add(ipAreaInfo);
 					hasInsert.add(Constant.getIPHead(ip));
 					notInList.add(ip);
@@ -209,12 +209,5 @@ public class SolveService {
 		databaseService.saveIpAreaInfos(addIPList);
 	}
 
-	public IpAreaInfo getNewIpAreaInfo(String ip) {
-		IpAreaInfo ipAreaInfo = new IpAreaInfo();
-		ipAreaInfo.setBh(UUID.randomUUID().toString().replaceAll("-", ""));
-		ipAreaInfo.setIp(Constant.getIPHead(ip));
-		ipAreaInfo.setCreatetime(new Date());
-		ipAreaInfo.setDelmark(Constant.DELMARK);
-		return ipAreaInfo;
-	}
+
 }

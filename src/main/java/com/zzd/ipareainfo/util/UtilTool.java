@@ -1,7 +1,11 @@
 package com.zzd.ipareainfo.util;
 
+import java.util.Date;
+import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import com.zzd.ipareainfo.bean.IpAreaInfo;
 
 public class UtilTool {
 	/**
@@ -15,5 +19,13 @@ public class UtilTool {
 		Pattern pattern = Pattern.compile(ip);
 		Matcher matcher = pattern.matcher(ipAddress);
 		return matcher.matches();
+	}
+	public static IpAreaInfo getNewIpAreaInfo(String ip) {
+		IpAreaInfo ipAreaInfo = new IpAreaInfo();
+		ipAreaInfo.setBh(UUID.randomUUID().toString().replaceAll("-", ""));
+		ipAreaInfo.setIp(Constant.getIPHead(ip));
+		ipAreaInfo.setCreatetime(new Date());
+		ipAreaInfo.setDelmark(Constant.DELMARK);
+		return ipAreaInfo;
 	}
 }
