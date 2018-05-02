@@ -35,7 +35,7 @@ public class Builder {
 	public IpAreaInfo build(TBResultData data, String ip) {
 		IpAreaInfo ipAreaInfo = new IpAreaInfo();
 		
-		String regionid = parseString(data.getRegionid());
+		String regionid = (data.getRegionid());
 		Province province = provinceService.getProvinceByRegionid(regionid);
 		if (province != null) {
 			// 对于国内省份，需要特殊处理，1.省份有些有省字有些没有省字，现统一用映射表里面的
@@ -44,21 +44,21 @@ public class Builder {
 			ipAreaInfo.setCountry(province.getCountry());
 			ipAreaInfo.setCountryid(province.getCountryid());
 		} else {
-			ipAreaInfo.setRegion(parseString(data.getRegion()));
-			ipAreaInfo.setCountry(parseString(data.getCountry()));
-			ipAreaInfo.setCountryid(parseString(data.getCountryid()));
+			ipAreaInfo.setRegion((data.getRegion()));
+			ipAreaInfo.setCountry((data.getCountry()));
+			ipAreaInfo.setCountryid((data.getCountryid()));
 		}
 		ipAreaInfo.setBh(UUID.randomUUID().toString().replaceAll("-", ""));
 		ipAreaInfo.setIp(ip);
-		ipAreaInfo.setArea(parseString(data.getArea()));
-		ipAreaInfo.setAreaid(parseString(data.getAreaid()));
-		ipAreaInfo.setRegionid(parseString(data.getRegionid()));
-		ipAreaInfo.setCity(parseString(data.getCity()));
-		ipAreaInfo.setCityid(parseString(data.getCityid()));
-		ipAreaInfo.setCounty(parseString(data.getCounty()));
-		ipAreaInfo.setCountyid(parseString(data.getCountyid()));
-		ipAreaInfo.setIsp(parseString(data.getIsp()));
-		ipAreaInfo.setIspid(parseString(data.getIspid()));
+		ipAreaInfo.setArea((data.getArea()));
+		ipAreaInfo.setAreaid((data.getAreaid()));
+		ipAreaInfo.setRegionid((data.getRegionid()));
+		ipAreaInfo.setCity((data.getCity()));
+		ipAreaInfo.setCityid((data.getCityid()));
+		ipAreaInfo.setCounty((data.getCounty()));
+		ipAreaInfo.setCountyid((data.getCountyid()));
+		ipAreaInfo.setIsp((data.getIsp()));
+		ipAreaInfo.setIspid((data.getIspid()));
 		ipAreaInfo.setDelmark(Constant.DELMARK);
 		ipAreaInfo.setUpdatetime(new Date());
 		return ipAreaInfo;
@@ -74,8 +74,9 @@ public class Builder {
 	public IpAreaInfo buildNow(TBResultData data, String ip) {
 		IpAreaInfo ipAreaInfo = new IpAreaInfo();
 
-		String regionid = parseString(data.getRegionid());
+		String regionid = (data.getRegionid());
 		Province province = provinceService.getProvinceByRegionid(regionid);
+		
 		if (province != null) {
 			// 对于国内省份，需要特殊处理，1.省份有些有省字有些没有省字，现统一用映射表里面的
 			ipAreaInfo.setRegion(province.getRegion());
@@ -83,21 +84,21 @@ public class Builder {
 			ipAreaInfo.setCountry(province.getCountry());
 			ipAreaInfo.setCountryid(province.getCountryid());
 		} else {
-			ipAreaInfo.setRegion(parseString(data.getRegion()));
-			ipAreaInfo.setCountry(parseString(data.getCountry()));
-			ipAreaInfo.setCountryid(parseString(data.getCountryid()));
+			ipAreaInfo.setRegion((data.getRegion()));
+			ipAreaInfo.setCountry((data.getCountry()));
+			ipAreaInfo.setCountryid((data.getCountryid()));
 		}
 		ipAreaInfo.setBh(UUID.randomUUID().toString().replaceAll("-", ""));
 		ipAreaInfo.setIp(ip);
-		ipAreaInfo.setArea(parseString(data.getArea()));
-		ipAreaInfo.setAreaid(parseString(data.getAreaid()));
-		ipAreaInfo.setRegionid(parseString(data.getRegionid()));
-		ipAreaInfo.setCity(parseString(data.getCity()));
-		ipAreaInfo.setCityid(parseString(data.getCityid()));
-		ipAreaInfo.setCounty(parseString(data.getCounty()));
-		ipAreaInfo.setCountyid(parseString(data.getCountyid()));
-		ipAreaInfo.setIsp(parseString(data.getIsp()));
-		ipAreaInfo.setIspid(parseString(data.getIspid()));
+		ipAreaInfo.setArea((data.getArea()));
+		ipAreaInfo.setAreaid((data.getAreaid()));
+		ipAreaInfo.setRegionid((data.getRegionid()));
+		ipAreaInfo.setCity((data.getCity()));
+		ipAreaInfo.setCityid((data.getCityid()));
+		ipAreaInfo.setCounty((data.getCounty()));
+		ipAreaInfo.setCountyid((data.getCountyid()));
+		ipAreaInfo.setIsp((data.getIsp()));
+		ipAreaInfo.setIspid((data.getIspid()));
 		ipAreaInfo.setDelmark(Constant.DELMARK);
 		ipAreaInfo.setCreatetime(new Date());
 		ipAreaInfo.setUpdatetime(new Date());
@@ -125,7 +126,7 @@ public class Builder {
 
 	/**
 	 * 淘宝返回的数据是unicode编码，转码保存入库
-	 * 
+	 * 20180428发现淘宝的编码改了，现在应该是utf-8了
 	 * @param str
 	 * @return
 	 */
