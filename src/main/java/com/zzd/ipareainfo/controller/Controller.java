@@ -1,16 +1,19 @@
 package com.zzd.ipareainfo.controller;
 
-import com.zzd.ipareainfo.bean.Result;
-import com.zzd.ipareainfo.service.HandleService;
-import com.zzd.ipareainfo.util.Constant;
-import com.zzd.ipareainfo.util.UtilTool;
+import java.text.ParseException;
+import java.util.Date;
 
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.zzd.ipareainfo.service.HandleService;
+import com.zzd.ipareainfo.util.Constant;
+import com.zzd.ipareainfo.util.UtilTool;
 
 @RestController
 public class Controller {
@@ -48,5 +51,20 @@ public class Controller {
 			logger.info("Ip地址传参错误：ipstart=" + ipstart + ",ipend=" + ipend);
 		}
 		logger.info("获得结果");
+	}
+
+	@RequestMapping(value = "/handle/transIpsIntoEs")
+	public void transIpsIntoEs(@RequestParam(value = "timestart", required = false) String timestart,
+			@RequestParam(value = "timeend", required = false) String timeend) {
+		Date start = null;
+		Date end = null;
+		try {
+			start = UtilTool.parseStrToDate(timestart);
+			end = UtilTool.parseStrToDate(timeend);
+		} catch (ParseException e) {
+			logger.error("日期格式异常", e);
+		}
+		handleService.TransIpsIntoES(start, end);
+
 	}
 }

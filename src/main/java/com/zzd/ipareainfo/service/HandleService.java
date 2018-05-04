@@ -1,15 +1,10 @@
 package com.zzd.ipareainfo.service;
 
-import com.alibaba.fastjson.JSONObject;
-import com.google.common.reflect.TypeToken;
-import com.zzd.ipareainfo.bean.IpAreaInfo;
-import com.zzd.ipareainfo.bean.TBResult;
-import com.zzd.ipareainfo.bean.TBResultData;
-import com.zzd.ipareainfo.builder.Builder;
-import com.zzd.ipareainfo.client.GSClient;
-import com.zzd.ipareainfo.service.DatabaseService;
-import com.zzd.ipareainfo.util.Constant;
-import com.zzd.ipareainfo.util.UtilTool;
+import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -17,8 +12,15 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.alibaba.fastjson.JSONObject;
+import com.google.common.reflect.TypeToken;
+import com.zzd.ipareainfo.bean.IpAreaInfo;
+import com.zzd.ipareainfo.bean.TBResult;
+import com.zzd.ipareainfo.bean.TBResultData;
+import com.zzd.ipareainfo.builder.Builder;
+import com.zzd.ipareainfo.client.GSClient;
+import com.zzd.ipareainfo.util.Constant;
+import com.zzd.ipareainfo.util.UtilTool;
 
 @Service
 public class HandleService {
@@ -28,7 +30,10 @@ public class HandleService {
 	private DatabaseService databaseService;
 	@Autowired
 	private Builder builder;
-
+	@Autowired
+	private IpAreaInfoService ipAreaInfoService;
+	@Autowired
+	private EsService esService;
 	/**
 	 * 更新IP库，将没有查的部分查询淘宝
 	 */
@@ -64,13 +69,39 @@ public class HandleService {
 		}
 	}
 
+	/**
+	 * 查询指定时间的IP转换到ES中
+	 * @param start
+	 * @param end
+	 */
+	public void TransIpsIntoES(Date start,Date end) {
+		Integer sum=ipAreaInfoService.getHandledIpCount(start, end);
+		for (Long i = 0L; i < sum; ) {
+			long limit=Constant.BULKSIZE;
+			long offset=i;
+			List<Map<Object, Object>> list=esService.getHandledIpToMap(limit, offset, start, end);
+			i=i+limit;
+			try {
+				esService.BulkRequest(list);
+			} catch (UnknownHostException e) {
+				logger.error("批量导入数据异常",e);
+			}
+		}
+	}
+
+	/**
+	 * 手动创建ip
+	 * 
+	 * @param ipstart
+	 * @param ipend
+	 */
 	public void makingIps(String ipstart, String ipend) {
 		logger.info("需要创建的IP有：" + ipstart + "-" + ipend);
 		String[] start = StringUtils.split(ipstart, ".");
 		String[] end = StringUtils.split(ipend, ".");
 		int[] startArr = new int[4];
 		int[] endarr = new int[4];
-		
+
 		for (int i = 0; i < 4; i++) {
 			startArr[i] = Integer.parseInt(start[i]);
 			endarr[i] = Integer.parseInt(end[i]);
@@ -91,13 +122,13 @@ public class HandleService {
 					thirdStart = startArr[2];
 					thirdend = endarr[2];
 				}
-				for(int k=thirdStart;k<thirdend;k++){
-					String ip=i+"."+j+"."+k+"."+1;
+				for (int k = thirdStart; k < thirdend; k++) {
+					String ip = i + "." + j + "." + k + "." + 1;
 					IpAreaInfo ipAreaInfo = databaseService.getIpAreaInfoByIp(ip);
-					if(ipAreaInfo==null){
-						IpAreaInfo newIpAreaInfo=UtilTool.getNewIpAreaInfo(ip);
-						IpAreaInfo ipinfo=databaseService.getIpAreaInfoByIp(ip);
-						if(ipinfo==null){
+					if (ipAreaInfo == null) {
+						IpAreaInfo newIpAreaInfo = UtilTool.getNewIpAreaInfo(ip);
+						IpAreaInfo ipinfo = databaseService.getIpAreaInfoByIp(ip);
+						if (ipinfo == null) {
 							databaseService.saveIpAreaInfo(newIpAreaInfo);
 						}
 					}

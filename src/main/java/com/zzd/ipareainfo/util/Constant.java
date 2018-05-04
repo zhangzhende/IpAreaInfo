@@ -9,27 +9,17 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties(prefix = "constant")
 public class Constant {
 	public static String servicename;
-	public static void setServicename(String servicename) {
-		Constant.servicename = servicename;
-	}
 	public static Boolean isUpdating;
-	
 	/**
 	 * 定时任务的开关
 	 */
 	public static String switchupdatetask;
-	public  void setSwitchupdatetask(String switchupdatetask) {
-		Constant.switchupdatetask = switchupdatetask;
-	}
-//	public static final String IP_TAOBAO_URL="http://ip.taobao.com/service/getIpInfo.php?ip=";
 	public static  String iptaobaourl;
-	
-	
-	public  void setIptaobaourl(String iptaobaourl) {
-		Constant.iptaobaourl = iptaobaourl;
-	}
 	public static final int DELMARK=0;
 	
+	public static final String ES_INDEX="ipinfos";
+	public static final String ES_TYPE="ipv4";
+	public static final int BULKSIZE=10000;
 	public static String getIPHead(String IP){
 		String IPHead ="";
 		if(StringUtils.isNotBlank(IP) && IP.contains(".")){
@@ -72,5 +62,15 @@ public class Constant {
 			this.code = code;
 			this.message = message;
 		}
+	}
+	public static void setServicename(String servicename) {
+		Constant.servicename = servicename;
+	}
+	public  void setSwitchupdatetask(String switchupdatetask) {
+		Constant.switchupdatetask = switchupdatetask;
+	}
+	
+	public  void setIptaobaourl(String iptaobaourl) {
+		Constant.iptaobaourl = iptaobaourl;
 	}
 }

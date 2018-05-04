@@ -23,72 +23,108 @@
 	</resultMap>
 	<insert id="addIpAreaInfo" parameterType="com.zzd.ipareainfo.bean.IpAreaInfo">
 		insert into
-		t_ipareainfo (C_BH, C_IP, C_COUNTRY, C_COUNTRY_ID, C_AREA,C_AREA_ID,C_REGION,C_REGION_ID,C_CITY,C_CITY_ID,C_COUNTY,C_COUNTY_ID,C_ISP,C_ISP_ID,N_DELMARK,D_CREATETIME,D_UPDATETIME)
+		t_ipareainfo (C_BH, C_IP, C_COUNTRY, C_COUNTRY_ID,
+		C_AREA,C_AREA_ID,C_REGION,C_REGION_ID,C_CITY,C_CITY_ID,C_COUNTY,C_COUNTY_ID,C_ISP,C_ISP_ID,N_DELMARK,D_CREATETIME,D_UPDATETIME)
 		values
-		(#{bh, jdbcType=CHAR}, 
-		#{ip,jdbcType=VARCHAR}, 
-		#{country,jdbcType=VARCHAR}, 
-		#{countryid,jdbcType=VARCHAR}, 
-		#{area,jdbcType=VARCHAR}, 
-		#{areaid,jdbcType=VARCHAR}, 
-		#{region,jdbcType=VARCHAR}, 
-		#{regionid,jdbcType=VARCHAR}, 
-		#{city,jdbcType=VARCHAR}, 
-		#{cityid,jdbcType=VARCHAR}, 
-		#{county,jdbcType=VARCHAR}, 
-		#{countyid,jdbcType=VARCHAR}, 
-		#{isp,jdbcType=VARCHAR}, 
+		(#{bh, jdbcType=CHAR},
+		#{ip,jdbcType=VARCHAR},
+		#{country,jdbcType=VARCHAR},
+		#{countryid,jdbcType=VARCHAR},
+		#{area,jdbcType=VARCHAR},
+		#{areaid,jdbcType=VARCHAR},
+		#{region,jdbcType=VARCHAR},
+		#{regionid,jdbcType=VARCHAR},
+		#{city,jdbcType=VARCHAR},
+		#{cityid,jdbcType=VARCHAR},
+		#{county,jdbcType=VARCHAR},
+		#{countyid,jdbcType=VARCHAR},
+		#{isp,jdbcType=VARCHAR},
 		#{ispid,jdbcType=VARCHAR},
 		#{delmark,jdbcType=INTEGER},
 		#{createtime,jdbcType=TIMESTAMP},
 		#{updatetime,jdbcType=TIMESTAMP})
 	</insert>
-	
+
 	<update id="updateIpAreaInfo" parameterType="com.zzd.ipareainfo.bean.IpAreaInfo">
-		update  t_ipareainfo
+		update t_ipareainfo
 		set
-	    C_COUNTRY= #{country,jdbcType=VARCHAR}, 
-	    C_COUNTRY_ID = #{countryid,jdbcType=VARCHAR}, 
-	    C_AREA= #{area,jdbcType=VARCHAR}, 
-	    C_AREA_ID = #{areaid,jdbcType=VARCHAR}, 
-	    C_REGION = #{region,jdbcType=VARCHAR}, 
-	    C_REGION_ID = #{regionid,jdbcType=VARCHAR}, 
-	    C_CITY = #{city,jdbcType=VARCHAR}, 
-	    C_CITY_ID = #{cityid,jdbcType=VARCHAR}, 
-	    C_COUNTY = #{county,jdbcType=VARCHAR}, 
-	    C_COUNTY_ID = #{countyid,jdbcType=VARCHAR}, 
-	    C_ISP = #{isp,jdbcType=VARCHAR}, 
-	    C_ISP_ID = #{ispid,jdbcType=VARCHAR},
-	    N_DELMARK = #{delmark,jdbcType=INTEGER},
-	    D_UPDATETIME = #{updatetime,jdbcType=TIMESTAMP}
+		C_COUNTRY= #{country,jdbcType=VARCHAR},
+		C_COUNTRY_ID =
+		#{countryid,jdbcType=VARCHAR},
+		C_AREA= #{area,jdbcType=VARCHAR},
+		C_AREA_ID = #{areaid,jdbcType=VARCHAR},
+		C_REGION =
+		#{region,jdbcType=VARCHAR},
+		C_REGION_ID = #{regionid,jdbcType=VARCHAR},
+		C_CITY = #{city,jdbcType=VARCHAR},
+		C_CITY_ID =
+		#{cityid,jdbcType=VARCHAR},
+		C_COUNTY = #{county,jdbcType=VARCHAR},
+		C_COUNTY_ID = #{countyid,jdbcType=VARCHAR},
+		C_ISP =
+		#{isp,jdbcType=VARCHAR},
+		C_ISP_ID = #{ispid,jdbcType=VARCHAR},
+		N_DELMARK = #{delmark,jdbcType=INTEGER},
+		D_UPDATETIME =
+		#{updatetime,jdbcType=TIMESTAMP}
 		where C_IP= #{ip,jdbcType=VARCHAR}
 	</update>
 	<select id="getIpAreaInfoByIp" parameterType="java.lang.String"
 		resultMap="IpAreaInfo">
-		select C_BH, C_IP, C_COUNTRY, C_COUNTRY_ID, C_AREA,C_AREA_ID,C_REGION,C_REGION_ID,C_CITY,C_CITY_ID,C_COUNTY,C_COUNTY_ID,C_ISP,C_ISP_ID,N_DELMARK,D_UPDATETIME
+		select C_BH, C_IP, C_COUNTRY, C_COUNTRY_ID,
+		C_AREA,C_AREA_ID,C_REGION,C_REGION_ID,C_CITY,C_CITY_ID,C_COUNTY,C_COUNTY_ID,C_ISP,C_ISP_ID,N_DELMARK,D_UPDATETIME
 		from t_ipareainfo
 		where C_IP = #{ip,jdbcType=VARCHAR}
 	</select>
 	<select id="getIpAreaInfoByIps" resultMap="IpAreaInfo">
-		select C_BH, C_IP, C_COUNTRY, C_COUNTRY_ID, C_AREA,C_AREA_ID,C_REGION,C_REGION_ID,C_CITY,C_CITY_ID,C_COUNTY,C_COUNTY_ID,C_ISP,C_ISP_ID,N_DELMARK,D_UPDATETIME
+		select C_BH, C_IP, C_COUNTRY, C_COUNTRY_ID,
+		C_AREA,C_AREA_ID,C_REGION,C_REGION_ID,C_CITY,C_CITY_ID,C_COUNTY,C_COUNTY_ID,C_ISP,C_ISP_ID,N_DELMARK,D_UPDATETIME
 		from t_ipareainfo
 		where C_IP in
-		<foreach item="list" index="index" collection="list"
-                 open="(" separator="," close=")">
-            #{list}
-        </foreach>
+		<foreach item="list" index="index" collection="list" open="("
+			separator="," close=")">
+			#{list}
+		</foreach>
 	</select>
 	<select id="getBhByIps" resultType="String">
 		select C_IP
 		from t_ipareainfo
 		where C_IP in
-		<foreach item="list" index="index" collection="list"
-                 open="(" separator="," close=")">
-            #{list}
-        </foreach>
+		<foreach item="list" index="index" collection="list" open="("
+			separator="," close=")">
+			#{list}
+		</foreach>
 	</select>
 	<select id="getUnHandleIp" resultType="java.lang.String">
-		select  C_IP from t_ipareainfo
+		select C_IP from
+		t_ipareainfo
 		where D_UPDATETIME is null ;
+	</select>
+	<select id="getHandledIpCount" resultType="java.lang.Integer"
+		parameterType="java.util.Date">
+		select count(*) from
+		t_ipareainfo
+		where D_UPDATETIME is not null
+		<if test="start != null">
+			and D_UPDATETIME &gt;= #{start}
+		</if>
+		<if test="end != null">
+			and D_UPDATETIME &lt;= #{end}
+		</if>
+		;
+	</select>
+	<select id="getHandledIp" resultMap="IpAreaInfo">
+		select 	t.C_BH as C_BH, t.C_IP as C_IP, t.C_COUNTRY as C_COUNTRY ,t.C_COUNTRY_ID as C_COUNTRY_ID,t.C_AREA as C_AREA,
+		t.C_AREA_ID as C_AREA_ID,t.C_REGION as C_REGION,t.C_REGION_ID as C_REGION_ID,t.C_CITY as C_CITY, t.C_CITY_ID as C_CITY_ID,
+		t.C_COUNTY as C_COUNTY,t.C_COUNTY_ID as C_COUNTY_ID,t.C_ISP as C_ISP,t.C_ISP_ID as C_ISP_ID,t.N_DELMARK as N_DELMARK,
+		t.D_CREATETIME as D_CREATETIME ,t.D_UPDATETIME as D_UPDATETIME
+		from t_ipareainfo t inner join (select C_BH from t_ipareainfo where D_UPDATETIME is not null
+		<if test="start != null">
+			and D_UPDATETIME &gt;= #{start}
+		</if>
+		<if test="end != null">
+			and D_UPDATETIME &lt;= #{end}
+		</if>
+		order by D_UPDATETIME asc limit #{limit} offset #{offset}) as v on v.C_BH = t.C_BH ;
 	</select>
 </mapper>
